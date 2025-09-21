@@ -1,30 +1,65 @@
-# Next.js blogging app
-
-*Automatically synced with your [v0.app](https://v0.app) deployments*
+# PostQuell - Modern Blogging Platform
 
 [![Deployed on Vercel](https://img.shields.io/badge/Deployed%20on-Vercel-black?style=for-the-badge&logo=vercel)](https://vercel.com/vansh-121s-projects/v0-next-js-blogging-app)
-[![Built with v0](https://img.shields.io/badge/Built%20with-v0.app-black?style=for-the-badge)](https://v0.app/chat/projects/wlv6hdUE1KB)
+
+## Live Demo
+
+Visit the live application at: [PostQuell Blog Platform](https://postquell.vercel.app/)
+
 
 ## Overview
 
-This repository will stay in sync with your deployed chats on [v0.app](https://v0.app).
-Any changes you make to your deployed app will be automatically pushed to this repository from [v0.app](https://v0.app).
+PostQuell is a modern, feature-rich blogging platform built with Next.js. It provides a seamless experience for creating, managing, and sharing blog posts with a beautiful, responsive interface.
 
-## Deployment
+## Features
 
-Your project is live at:
+- 🎨 Modern and responsive UI design
+- ✍️ Rich text blog creation and editing
+- 📱 Mobile-friendly interface
+- 🌓 Light/Dark mode support
+- 📊 User dashboard
+- 🔍 Blog search and navigation
+- ⚡ Fast page loads with Next.js
+- 🎯 SEO optimized
 
-**[https://vercel.com/vansh-121s-projects/v0-next-js-blogging-app](https://vercel.com/vansh-121s-projects/v0-next-js-blogging-app)**
+## Tech Stack
 
-## Build your app
+- **Framework**: Next.js
+- **Styling**: Tailwind CSS
+- **Components**: Shadcn/ui
+- **Deployment**: Vercel
 
-Continue building your app on:
+## Getting Started
 
-**[https://v0.app/chat/projects/wlv6hdUE1KB](https://v0.app/chat/projects/wlv6hdUE1KB)**
+1. Clone the repository
+```bash
+git clone [repository-url]
+```
 
-## How It Works
+2. Install dependencies
+```bash
+pnpm install
+```
 
-1. Create and modify your project using [v0.app](https://v0.app)
-2. Deploy your chats from the v0 interface
-3. Changes are automatically pushed to this repository
-4. Vercel deploys the latest version from this repository
+3. Run the development server
+```bash
+pnpm dev
+```
+
+4. Open [http://localhost:3000](http://localhost:3000) in your browser
+
+## Project Structure
+
+```
+app/                # Next.js app directory
+├── blog/          # Individual blog post pages
+├── blogs/         # Blog listing pages
+├── create/        # Blog creation page
+├── dashboard/     # User dashboard
+└── edit/          # Blog editing page
+components/        # Reusable UI components
+hooks/             # Custom React hooks
+lib/               # Utility functions and stores
+public/            # Static assets
+```
+
