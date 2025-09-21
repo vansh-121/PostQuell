@@ -73,7 +73,7 @@ export default function BlogsPage() {
 
         {/* Search and Filters */}
         <Card className="mb-8">
-          <CardContent className="p-6">
+          <CardContent>
             <div className="flex flex-col lg:flex-row gap-4">
               {/* Search */}
               <div className="relative flex-1">
@@ -149,7 +149,7 @@ export default function BlogsPage() {
         {/* Blog Posts Grid */}
         {filteredPosts.length === 0 ? (
           <Card>
-            <CardContent className="p-12 text-center">
+            <CardContent className="text-center">
               <BookOpen className="h-16 w-16 text-muted-foreground mx-auto mb-4" />
               <h3 className="text-xl font-semibold mb-2">No Posts Found</h3>
               <p className="text-muted-foreground mb-6">
@@ -179,7 +179,7 @@ export default function BlogsPage() {
         {filteredPosts.length > 0 && (
           <div className="mt-16 text-center">
             <Card className="bg-muted/30">
-              <CardContent className="p-8">
+              <CardContent>
                 <h3 className="text-2xl font-bold mb-4 font-[family-name:var(--font-playfair)]">
                   Have Something to Share?
                 </h3>

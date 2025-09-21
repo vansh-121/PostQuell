@@ -132,7 +132,7 @@ export default function BlogPage({ params }: BlogPageProps) {
           {/* Blog Post */}
           <article>
             <Card>
-              <CardContent className="p-8">
+              <CardContent>
                 {/* Featured Image */}
                 {post.image && (
                   <div className="relative h-64 md:h-96 w-full mb-8 rounded-lg overflow-hidden">
@@ -186,7 +186,7 @@ export default function BlogPage({ params }: BlogPageProps) {
           {/* Call to Action */}
           <div className="mt-12 text-center">
             <Card className="bg-muted/30">
-              <CardContent className="p-8">
+              <CardContent>
                 <h3 className="text-2xl font-bold mb-4 font-[family-name:var(--font-playfair)]">
                   Ready to Share Your Story?
                 </h3>

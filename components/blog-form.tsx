@@ -40,13 +40,52 @@ export function BlogForm({ initialData, onSubmit, isLoading = false, submitLabel
 
   const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0]
-    if (file) {
-      const reader = new FileReader()
-      reader.onload = (e) => {
-        setImage(e.target?.result as string)
+    if (!file) return
+
+    // Compress/resize the image before storing as data URL to avoid large localStorage usage
+    const compressImage = async (file: File, maxWidth = 1200, maxHeight = 800, quality = 0.8) => {
+      try {
+        if (typeof createImageBitmap === "function") {
+          const bitmap = await createImageBitmap(file)
+          const ratio = Math.min(maxWidth / bitmap.width, maxHeight / bitmap.height, 1)
+          const width = Math.round(bitmap.width * ratio)
+          const height = Math.round(bitmap.height * ratio)
+
+          const canvas = document.createElement("canvas")
+          canvas.width = width
+          canvas.height = height
+          const ctx = canvas.getContext("2d")
+          if (!ctx) throw new Error("Could not get canvas context")
+          ctx.drawImage(bitmap, 0, 0, width, height)
+          return canvas.toDataURL("image/jpeg", quality)
+        }
+
+        // Fallback for older browsers
+        return await new Promise<string>((resolve, reject) => {
+          const reader = new FileReader()
+          reader.onload = () => resolve(reader.result as string)
+          reader.onerror = reject
+          reader.readAsDataURL(file)
+        })
+      } catch (err) {
+        // If compression fails, fallback to original file as data URL
+        return await new Promise<string>((resolve, reject) => {
+          const reader = new FileReader()
+          reader.onload = () => resolve(reader.result as string)
+          reader.onerror = reject
+          reader.readAsDataURL(file)
+        })
       }
-      reader.readAsDataURL(file)
     }
+
+      ; (async () => {
+        try {
+          const dataUrl = await compressImage(file)
+          setImage(dataUrl)
+        } catch (err) {
+          console.error("Error processing image:", err)
+        }
+      })()
   }
 
   const addTag = () => {
@@ -100,10 +139,17 @@ export function BlogForm({ initialData, onSubmit, isLoading = false, submitLabel
 
       {isPreview ? (
         <Card>
-          <CardContent className="p-8">
+          <CardContent>
             {image && (
               <div className="relative h-64 w-full mb-6 rounded-lg overflow-hidden">
-                <Image src={image || "/placeholder.svg"} alt={title} fill className="object-cover" />
+                {/* Next/Image may attempt optimization which doesn't work well with data URLs; use <img> for data URLs */}
+                {image.startsWith("data:") ? (
+                  // plain img for data URLs
+                  // eslint-disable-next-line @next/next/no-img-element
+                  <img src={image} alt={title} className="w-full h-64 object-cover rounded-lg" />
+                ) : (
+                  <Image src={image || "/placeholder.svg"} alt={title} fill className="object-cover" />
+                )}
               </div>
             )}
 
@@ -183,7 +229,12 @@ export function BlogForm({ initialData, onSubmit, isLoading = false, submitLabel
               <div className="space-y-4">
                 {image && (
                   <div className="relative h-48 w-full rounded-lg overflow-hidden">
-                    <Image src={image || "/placeholder.svg"} alt="Preview" fill className="object-cover" />
+                    {image.startsWith("data:") ? (
+                      // eslint-disable-next-line @next/next/no-img-element
+                      <img src={image} alt="Preview" className="w-full h-48 object-cover rounded-lg" />
+                    ) : (
+                      <Image src={image || "/placeholder.svg"} alt="Preview" fill className="object-cover" />
+                    )}
                     <Button
                       type="button"
                       variant="destructive"

@@ -3,6 +3,7 @@
 import { Header } from "@/components/header"
 import { BlogForm } from "@/components/blog-form"
 import { useBlogStore } from "@/hooks/use-blog-store"
+import { blogStore } from "@/lib/blog-store"
 import { useRouter } from "next/navigation"
 import { useState, useEffect } from "react"
 import type { BlogPost } from "@/lib/blog-store"
@@ -41,6 +42,11 @@ export default function EditPage({ params }: EditPageProps) {
     try {
       const updatedPost = updatePost(params.id, data)
       if (updatedPost) {
+        if (blogStore.getLastSaveStrippedImages && blogStore.getLastSaveStrippedImages()) {
+          alert(
+            "The post was updated but the featured image could not be saved due to browser storage limits. The image was removed from the saved post."
+          )
+        }
         router.push(`/blog/${updatedPost.id}`)
       }
     } catch (error) {

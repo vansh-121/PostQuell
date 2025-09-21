@@ -3,6 +3,7 @@
 import { Header } from "@/components/header"
 import { BlogForm } from "@/components/blog-form"
 import { useBlogStore } from "@/hooks/use-blog-store"
+import { blogStore } from "@/lib/blog-store"
 import { useRouter } from "next/navigation"
 import { useState } from "react"
 
@@ -23,6 +24,13 @@ export default function CreatePage() {
 
     try {
       const newPost = addPost(data)
+      // If localStorage had to strip images, inform the user
+      if (blogStore.getLastSaveStrippedImages && blogStore.getLastSaveStrippedImages()) {
+        // Minimal notification - use alert for now
+        alert(
+          "Your post was published but the featured image could not be saved due to browser storage limits. The image was removed from the saved post."
+        )
+      }
       router.push(`/blog/${newPost.id}`)
     } catch (error) {
       console.error("Error creating post:", error)

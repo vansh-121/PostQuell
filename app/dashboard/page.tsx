@@ -66,7 +66,7 @@ export default function DashboardPage() {
               <CardTitle className="text-sm font-medium">Recent Posts</CardTitle>
               <Calendar className="h-4 w-4 text-muted-foreground" />
             </CardHeader>
-            <CardContent>
+            <CardContent className="text-center">
               <div className="text-2xl font-bold">{stats.recentPosts}</div>
               <p className="text-xs text-muted-foreground">Published in the last 7 days</p>
             </CardContent>
@@ -95,7 +95,7 @@ export default function DashboardPage() {
 
           {recentPosts.length === 0 ? (
             <Card>
-              <CardContent className="p-12 text-center">
+              <CardContent className="text-center">
                 <PenTool className="h-16 w-16 text-muted-foreground mx-auto mb-4" />
                 <h3 className="text-xl font-semibold mb-2">No Posts Yet</h3>
                 <p className="text-muted-foreground mb-6">Start your blogging journey by creating your first post.</p>

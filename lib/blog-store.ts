@@ -15,6 +15,7 @@ export interface BlogPost {
 class BlogStore {
   private posts: BlogPost[] = []
   private listeners: (() => void)[] = []
+  private lastSaveStrippedImages = false
 
   constructor() {
     // Load from localStorage if available
@@ -61,7 +62,23 @@ class BlogStore {
 
   private save() {
     if (typeof window !== "undefined") {
-      localStorage.setItem("postquell-blogs", JSON.stringify(this.posts))
+      try {
+        localStorage.setItem("postquell-blogs", JSON.stringify(this.posts))
+        this.lastSaveStrippedImages = false
+      } catch (err) {
+        // If saving fails (likely quota exceeded), attempt to save without images
+        console.warn("localStorage save failed, attempting to save posts without images:", err)
+        try {
+          const postsNoImages = this.posts.map((p) => ({ ...p, image: undefined }))
+          localStorage.setItem("postquell-blogs", JSON.stringify(postsNoImages))
+          // also update in-memory posts to reflect that images were stripped when persisted
+          this.posts = this.posts.map((p) => ({ ...p, image: undefined }))
+          this.lastSaveStrippedImages = true
+        } catch (err2) {
+          // If this also fails, give up but keep in-memory posts
+          console.error("Failed to save posts to localStorage after stripping images:", err2)
+        }
+      }
     }
   }
 
@@ -109,6 +126,11 @@ class BlogStore {
     this.save()
     this.notify()
     return this.posts[index]
+  }
+
+  // Returns true if the last save operation had to strip images due to storage limits
+  getLastSaveStrippedImages() {
+    return this.lastSaveStrippedImages
   }
 
   deletePost(id: string): boolean {
